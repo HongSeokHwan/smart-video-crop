@@ -2,9 +2,11 @@
   "name": "smart-video-crop",
   "version": "0.0.1",
   "preferGlobal": true,
-  "bin": {
-    "smart-video-crop": "smart-video-crop.js"
-  },
+  "main": "./smart-video-crop",
+  "files": [
+    "smart-video-crop.js"
+  ],
+  "engines": { "node": ">= 6.6.0" }, 
   "license": "MIT",
   "repository": {
     "type": "git",
