@@ -1,0 +1,30 @@
+{
+  "name": "smart-video-crop",
+  "version": "0.0.1",
+  "preferGlobal": true,
+  "bin": {
+    "smart-video-crop": "smart-video-crop.js"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HongSeokHwan/smart-video-crop"
+  },
+  "dependencies": {
+    "asyncawait": "^1.0.6",
+    "concat-stream": "^1.5.1",
+    "easyimage": "^2.1.0",
+    "fluent-ffmpeg": "^2.1.0",
+    "fs-extra": "^0.30.0",
+    "gm": "^1.22.0",
+    "image-size": "^0.5.0",
+    "loglevel": "^1.4.1",
+    "opencv": "^5.0.0",
+    "path": "^0.12.7",
+    "smartcrop-gm": "~1.0.1",
+    "yargs": "~1.2.1"
+  },
+  "optionalDependencies": {
+    "opencv": "^5.0.0"
+  }
+}

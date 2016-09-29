@@ -1,1 +1,1 @@
-# smart-video-crop
+# Smart video crop
