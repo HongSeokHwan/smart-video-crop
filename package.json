@@ -1,6 +1,6 @@
 {
   "name": "smart-video-crop",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "preferGlobal": true,
   "main": "./smart-video-crop",
   "files": [
