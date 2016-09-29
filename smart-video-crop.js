@@ -247,20 +247,29 @@ let cropImage = async(function (input) {
       width: input.width,
       height: input.height,
     };
+
     let fd = await(faceDetect(input.inFile, options));
     let result = await(smartcrop.crop(input.inFile, options));
 
     let tc = result.topCrop;
-
-    await(easyimage.crop({
-            src: input.inFile, 
-            dst: input.outFile,
-            cropwidth: tc.width,
-            cropheight: tc.height,
-            gravity: 'Center',
-            x: tc.x,
-            y: tc.y
-        }));
+    let param = {
+      src: input.inFile,
+      dst: input.outFile,
+      cropwidth: tc.width,
+      cropheight: tc.height,
+      width: input.width,
+      height: input.height,
+      gravity: 'NorthWest',
+      x: tc.x,
+      y: tc.y
+    };
+    await(easyimage.crop(param));
+    await(easyimage.resize({
+      src: input.outFile,
+      dst: input.outFile,
+      width: input.width,
+      height: input.height,
+    }));
     _s(true);
   });
 });
