@@ -1,7 +1,7 @@
 # Smart video crop
 --------
 The smart-video-crop is inspired by smartcrop.js (https://github.com/jwagner/smartcrop.js)
-You can do content video crop.
+You can do content aware video crop.
 
 # Install
 --------
