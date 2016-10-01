@@ -10,7 +10,7 @@ const gm = require('gm').subClass({imageMagick: true});
 const cv = require('opencv');
 const easyimage = require('easyimage');
 var sizeOf = require('image-size');
-log.setLevel("warn");
+log.setLevel("info");
 
 
 function getShape(size) {
@@ -243,34 +243,49 @@ class SmartVideoCrop {
 
 let cropImage = async(function (input) {
   return new Promise((_s, _f) => {
-    let options = {
-      width: input.width,
-      height: input.height,
-    };
+    if (input.stupid) {
+      log.info('stupid mode crop image.');
+      let param = {
+        src: input.inFile,
+        dst: input.outFile,
+        width: input.width,
+        height: input.height,
+        cropwidth: input.width,
+        cropheight: input.height,
+        fill: true,
+      };
+      await(easyimage.rescrop(param));
+    }
+    else {
+      let options = {
+        width: input.width,
+         height: input.height,
+      };
 
-    let fd = await(faceDetect(input.inFile, options));
-    let result = await(smartcrop.crop(input.inFile, options));
+      let fd = await(faceDetect(input.inFile, options));
+      let result = await(smartcrop.crop(input.inFile, options));
 
-    let tc = result.topCrop;
-    let param = {
-      src: input.inFile,
-      dst: input.outFile,
-      cropwidth: tc.width,
-      cropheight: tc.height,
-      width: input.width,
-      height: input.height,
-      gravity: 'NorthWest',
-      x: tc.x,
-      y: tc.y
-    };
-    await(easyimage.crop(param));
-    await(easyimage.resize({
-      src: input.outFile,
-      dst: input.outFile,
-      width: input.width,
-      height: input.height,
-    }));
-    _s(true);
+      let tc = result.topCrop;
+      let param = {
+        src: input.inFile,
+         dst: input.outFile,
+         cropwidth: tc.width,
+         cropheight: tc.height,
+         width: input.width,
+         height: input.height,
+         gravity: 'NorthWest',
+         x: tc.x,
+         y: tc.y
+      };
+      await(easyimage.crop(param));
+      await(easyimage.resize({
+        src: input.outFile,
+        dst: input.outFile,
+        width: input.width,
+        height: input.height,
+      }));
+    }
+  _s(true);
   });
 });
 
