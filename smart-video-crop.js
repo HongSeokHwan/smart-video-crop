@@ -10,11 +10,10 @@ const gm = require('gm').subClass({imageMagick: true});
 const cv = require('opencv');
 const easyimage = require('easyimage');
 var sizeOf = require('image-size');
-log.setLevel("info");
-
+log.setLevel("warn");
 
 function getShape(size) {
-  
+
   if (size.width > size.height) {
     return 'landscape';
   }
@@ -26,9 +25,8 @@ function getShape(size) {
   }
 }
 
-
 function isFaceExist(input) {
-  
+
   return new Promise(function (resolve, reject) {
     cv.readImage(input, function (err, image) {
       if (err) return reject(err);
@@ -43,7 +41,6 @@ function isFaceExist(input) {
       });
     });
   });
-  
 }
 
 function faceDetect(input, options) {
@@ -67,7 +64,6 @@ function faceDetect(input, options) {
     });
   });
 }
-
 
 class SmartVideoCrop {
   constructor(input) {
@@ -133,10 +129,10 @@ class SmartVideoCrop {
     }
     return promiseList;
   }
-  
+
   getInfo() {
-    return new Promise((_s, _f)=>{
-      
+    return new Promise((_s, _f)=> {
+
       let posterList = this._collectPosterImageNames();
       let ret = {
         width: 0,
@@ -144,7 +140,7 @@ class SmartVideoCrop {
         faceExist: false,
         shape: 'landscape',
       };
-      
+
       for (let i = 0; i < posterList.length; ++i) {
         let poster = posterList[i];
 
@@ -225,18 +221,18 @@ class SmartVideoCrop {
     let sizeInfo = `${w}x${h}`;
     return new Promise((resolve, reject) => {
       ffmpeg(this._input.tmpFile)
-      .size(`${w}x${h}`)
-      .on('error', function (err, stdout, stderr) {
-        log.error('Crop video error', err);
-        // console.log(err, stdout, stderr);
-        reject(err);
-      })
-    .on('end', function () {
-      log.info('Finished crop video ffmpeg process');
-      resolve(true);
-    })
-    .output(this._input.outFile)
-      .run();
+        .size(`${w}x${h}`)
+        .on('error', function (err, stdout, stderr) {
+          log.error('Crop video error', err);
+          // console.log(err, stdout, stderr);
+          reject(err);
+        })
+        .on('end', function () {
+          log.info('Finished crop video ffmpeg process');
+          resolve(true);
+        })
+        .output(this._input.outFile)
+        .run();
     });
   }
 }
@@ -259,7 +255,7 @@ let cropImage = async(function (input) {
     else {
       let options = {
         width: input.width,
-         height: input.height,
+        height: input.height,
       };
 
       let fd = await(faceDetect(input.inFile, options));
@@ -268,14 +264,14 @@ let cropImage = async(function (input) {
       let tc = result.topCrop;
       let param = {
         src: input.inFile,
-         dst: input.outFile,
-         cropwidth: tc.width,
-         cropheight: tc.height,
-         width: input.width,
-         height: input.height,
-         gravity: 'NorthWest',
-         x: tc.x,
-         y: tc.y
+        dst: input.outFile,
+        cropwidth: tc.width,
+        cropheight: tc.height,
+        width: input.width,
+        height: input.height,
+        gravity: 'NorthWest',
+        x: tc.x,
+        y: tc.y
       };
       await(easyimage.crop(param));
       await(easyimage.resize({
@@ -285,18 +281,18 @@ let cropImage = async(function (input) {
         height: input.height,
       }));
     }
-  _s(true);
+    _s(true);
   });
 });
 
 let cropVideo = async(function (input) {
-  return new Promise((rs, rj) => {
+  return new Promise((_s, _f) => {
     let videoCrop = new SmartVideoCrop(input);
     await(videoCrop.createPosters());
     let cropInfo = await(videoCrop.getImageCropInfo());
     await(videoCrop.convertVideo(cropInfo));
     await(videoCrop.resizeVideo());
-    rs(true);
+    _s(true);
   });
 });
 
@@ -311,7 +307,7 @@ let getInfo = async(function (fileName) {
     info.fileName = fileName;
     return info;
   }
-    
+
   else if (fileName.indexOf('.jpg') >= 0) {
     let ret = {
       width: 0,
@@ -334,23 +330,21 @@ let getInfo = async(function (fileName) {
   return null;
 });
 
-
 exports.crop = cropVideo;
 exports.cropVideo = cropVideo;
 exports.cropImage = cropImage;
 exports.getInfo = getInfo;
 exports.getShape = getShape;
 
-
 if (require.main === module) {
 
   let input = {
     inFile: '1.mp4',
-    outFile: 'outfile.mp4',
+    outFile: '1-out.mp4',
     width: 1280,
     height: 720,
   };
-  
+
   cropVideo(input);
 }
 
