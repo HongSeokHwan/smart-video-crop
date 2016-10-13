@@ -10,7 +10,7 @@ const gm = require('gm').subClass({imageMagick: true});
 const cv = require('opencv');
 const easyimage = require('easyimage');
 var sizeOf = require('image-size');
-log.setLevel("warn");
+log.setLevel("info");
 
 function getShape(size) {
 
@@ -308,7 +308,7 @@ let getInfo = async(function (fileName) {
     return info;
   }
 
-  else if (fileName.indexOf('.jpg') >= 0) {
+  else if (fileName.indexOf('.jpg') >= 0 || fileName.indexOf('.jpeg') >= 0) {
     let ret = {
       width: 0,
       height: 0,
@@ -325,7 +325,7 @@ let getInfo = async(function (fileName) {
     return ret;
   }
   else {
-    log.error('Not supported file type:', fileName);
+    log.error('Not supported file type(Check ext):', fileName);
   }
   return null;
 });
